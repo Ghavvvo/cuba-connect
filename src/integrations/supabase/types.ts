@@ -14,16 +14,166 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      banners: {
+        Row: {
+          active: boolean
+          category: string | null
+          created_at: string
+          id: string
+          image_url: string
+          position: string
+          target_url: string | null
+          zone: string | null
+        }
+        Insert: {
+          active?: boolean
+          category?: string | null
+          created_at?: string
+          id?: string
+          image_url: string
+          position?: string
+          target_url?: string | null
+          zone?: string | null
+        }
+        Update: {
+          active?: boolean
+          category?: string | null
+          created_at?: string
+          id?: string
+          image_url?: string
+          position?: string
+          target_url?: string | null
+          zone?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          name: string | null
+          whatsapp: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id: string
+          name?: string | null
+          whatsapp?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string | null
+          whatsapp?: string | null
+        }
+        Relationships: []
+      }
+      properties: {
+        Row: {
+          active: boolean
+          bid_amount: number
+          category: string
+          clicks: number
+          cover_url: string | null
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          owner_id: string | null
+          photo_url: string | null
+          slug: string
+          subdomain: string | null
+          views: number
+          whatsapp: string
+          zone: string
+        }
+        Insert: {
+          active?: boolean
+          bid_amount?: number
+          category: string
+          clicks?: number
+          cover_url?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          owner_id?: string | null
+          photo_url?: string | null
+          slug: string
+          subdomain?: string | null
+          views?: number
+          whatsapp: string
+          zone: string
+        }
+        Update: {
+          active?: boolean
+          bid_amount?: number
+          category?: string
+          clicks?: number
+          cover_url?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          owner_id?: string | null
+          photo_url?: string | null
+          slug?: string
+          subdomain?: string | null
+          views?: number
+          whatsapp?: string
+          zone?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "properties_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      increment_clicks: { Args: { _slug: string }; Returns: undefined }
+      increment_views: { Args: { _slug: string }; Returns: undefined }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "prestador"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +300,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "prestador"],
+    },
   },
 } as const
