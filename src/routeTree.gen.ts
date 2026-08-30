@@ -10,16 +10,26 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as HostalesRouteImport } from './routes/hostales'
 import { Route as RestaurantesRouteImport } from './routes/restaurantes'
 import { Route as TaxisRouteImport } from './routes/taxis'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminBannersRouteImport } from './routes/admin.banners'
+import { Route as AdminBidsRouteImport } from './routes/admin.bids'
+import { Route as PrestadoresDashboardRouteImport } from './routes/prestadores.dashboard'
 import { Route as PrestadoresRegistroRouteImport } from './routes/prestadores.registro'
 import { Route as PropiedadSlugRouteImport } from './routes/propiedad.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -42,6 +52,26 @@ const TaxisRoute = TaxisRouteImport.update({
   path: '/taxis',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminBannersRoute = AdminBannersRouteImport.update({
+  id: '/banners',
+  path: '/banners',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminBidsRoute = AdminBidsRouteImport.update({
+  id: '/bids',
+  path: '/bids',
+  getParentRoute: () => AdminRoute,
+} as any)
+const PrestadoresDashboardRoute = PrestadoresDashboardRouteImport.update({
+  id: '/prestadores/dashboard',
+  path: '/prestadores/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrestadoresRegistroRoute = PrestadoresRegistroRouteImport.update({
   id: '/prestadores/registro',
   path: '/prestadores/registro',
@@ -55,12 +85,17 @@ const PropiedadSlugRoute = PropiedadSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/hostales': typeof HostalesRoute
   '/restaurantes': typeof RestaurantesRoute
   '/taxis': typeof TaxisRoute
+  '/admin/banners': typeof AdminBannersRoute
+  '/admin/bids': typeof AdminBidsRoute
+  '/prestadores/dashboard': typeof PrestadoresDashboardRoute
   '/prestadores/registro': typeof PrestadoresRegistroRoute
   '/propiedad/$slug': typeof PropiedadSlugRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -68,29 +103,43 @@ export interface FileRoutesByTo {
   '/hostales': typeof HostalesRoute
   '/restaurantes': typeof RestaurantesRoute
   '/taxis': typeof TaxisRoute
+  '/admin/banners': typeof AdminBannersRoute
+  '/admin/bids': typeof AdminBidsRoute
+  '/prestadores/dashboard': typeof PrestadoresDashboardRoute
   '/prestadores/registro': typeof PrestadoresRegistroRoute
   '/propiedad/$slug': typeof PropiedadSlugRoute
+  '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/hostales': typeof HostalesRoute
   '/restaurantes': typeof RestaurantesRoute
   '/taxis': typeof TaxisRoute
+  '/admin/banners': typeof AdminBannersRoute
+  '/admin/bids': typeof AdminBidsRoute
+  '/prestadores/dashboard': typeof PrestadoresDashboardRoute
   '/prestadores/registro': typeof PrestadoresRegistroRoute
   '/propiedad/$slug': typeof PropiedadSlugRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/auth'
     | '/hostales'
     | '/restaurantes'
     | '/taxis'
+    | '/admin/banners'
+    | '/admin/bids'
+    | '/prestadores/dashboard'
     | '/prestadores/registro'
     | '/propiedad/$slug'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -98,25 +147,36 @@ export interface FileRouteTypes {
     | '/hostales'
     | '/restaurantes'
     | '/taxis'
+    | '/admin/banners'
+    | '/admin/bids'
+    | '/prestadores/dashboard'
     | '/prestadores/registro'
     | '/propiedad/$slug'
+    | '/admin'
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/auth'
     | '/hostales'
     | '/restaurantes'
     | '/taxis'
+    | '/admin/banners'
+    | '/admin/bids'
+    | '/prestadores/dashboard'
     | '/prestadores/registro'
     | '/propiedad/$slug'
+    | '/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AuthRoute: typeof AuthRoute
   HostalesRoute: typeof HostalesRoute
   RestaurantesRoute: typeof RestaurantesRoute
   TaxisRoute: typeof TaxisRoute
+  PrestadoresDashboardRoute: typeof PrestadoresDashboardRoute
   PrestadoresRegistroRoute: typeof PrestadoresRegistroRoute
   PropiedadSlugRoute: typeof PropiedadSlugRoute
 }
@@ -128,6 +188,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -158,6 +225,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TaxisRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/banners': {
+      id: '/admin/banners'
+      path: '/banners'
+      fullPath: '/admin/banners'
+      preLoaderRoute: typeof AdminBannersRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/bids': {
+      id: '/admin/bids'
+      path: '/bids'
+      fullPath: '/admin/bids'
+      preLoaderRoute: typeof AdminBidsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/prestadores/dashboard': {
+      id: '/prestadores/dashboard'
+      path: '/prestadores/dashboard'
+      fullPath: '/prestadores/dashboard'
+      preLoaderRoute: typeof PrestadoresDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/prestadores/registro': {
       id: '/prestadores/registro'
       path: '/prestadores/registro'
@@ -175,12 +270,28 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminRouteChildren {
+  AdminBannersRoute: typeof AdminBannersRoute
+  AdminBidsRoute: typeof AdminBidsRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminBannersRoute: AdminBannersRoute,
+  AdminBidsRoute: AdminBidsRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
   AuthRoute: AuthRoute,
   HostalesRoute: HostalesRoute,
   RestaurantesRoute: RestaurantesRoute,
   TaxisRoute: TaxisRoute,
+  PrestadoresDashboardRoute: PrestadoresDashboardRoute,
   PrestadoresRegistroRoute: PrestadoresRegistroRoute,
   PropiedadSlugRoute: PropiedadSlugRoute,
 }
