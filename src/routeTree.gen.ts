@@ -10,14 +10,21 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as HostalesRouteImport } from './routes/hostales'
 import { Route as RestaurantesRouteImport } from './routes/restaurantes'
 import { Route as TaxisRouteImport } from './routes/taxis'
+import { Route as PrestadoresRegistroRouteImport } from './routes/prestadores.registro'
 import { Route as PropiedadSlugRouteImport } from './routes/propiedad.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HostalesRoute = HostalesRouteImport.update({
@@ -35,6 +42,11 @@ const TaxisRoute = TaxisRouteImport.update({
   path: '/taxis',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrestadoresRegistroRoute = PrestadoresRegistroRouteImport.update({
+  id: '/prestadores/registro',
+  path: '/prestadores/registro',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PropiedadSlugRoute = PropiedadSlugRouteImport.update({
   id: '/propiedad/$slug',
   path: '/propiedad/$slug',
@@ -43,45 +55,69 @@ const PropiedadSlugRoute = PropiedadSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/hostales': typeof HostalesRoute
   '/restaurantes': typeof RestaurantesRoute
   '/taxis': typeof TaxisRoute
+  '/prestadores/registro': typeof PrestadoresRegistroRoute
   '/propiedad/$slug': typeof PropiedadSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/hostales': typeof HostalesRoute
   '/restaurantes': typeof RestaurantesRoute
   '/taxis': typeof TaxisRoute
+  '/prestadores/registro': typeof PrestadoresRegistroRoute
   '/propiedad/$slug': typeof PropiedadSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/hostales': typeof HostalesRoute
   '/restaurantes': typeof RestaurantesRoute
   '/taxis': typeof TaxisRoute
+  '/prestadores/registro': typeof PrestadoresRegistroRoute
   '/propiedad/$slug': typeof PropiedadSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/hostales' | '/restaurantes' | '/taxis' | '/propiedad/$slug'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/hostales' | '/restaurantes' | '/taxis' | '/propiedad/$slug'
-  id:
-    | '__root__'
+  fullPaths:
     | '/'
+    | '/auth'
     | '/hostales'
     | '/restaurantes'
     | '/taxis'
+    | '/prestadores/registro'
+    | '/propiedad/$slug'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/auth'
+    | '/hostales'
+    | '/restaurantes'
+    | '/taxis'
+    | '/prestadores/registro'
+    | '/propiedad/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/hostales'
+    | '/restaurantes'
+    | '/taxis'
+    | '/prestadores/registro'
     | '/propiedad/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
   HostalesRoute: typeof HostalesRoute
   RestaurantesRoute: typeof RestaurantesRoute
   TaxisRoute: typeof TaxisRoute
+  PrestadoresRegistroRoute: typeof PrestadoresRegistroRoute
   PropiedadSlugRoute: typeof PropiedadSlugRoute
 }
 
@@ -92,6 +128,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/hostales': {
@@ -115,6 +158,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TaxisRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/prestadores/registro': {
+      id: '/prestadores/registro'
+      path: '/prestadores/registro'
+      fullPath: '/prestadores/registro'
+      preLoaderRoute: typeof PrestadoresRegistroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/propiedad/$slug': {
       id: '/propiedad/$slug'
       path: '/propiedad/$slug'
@@ -127,9 +177,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
   HostalesRoute: HostalesRoute,
   RestaurantesRoute: RestaurantesRoute,
   TaxisRoute: TaxisRoute,
+  PrestadoresRegistroRoute: PrestadoresRegistroRoute,
   PropiedadSlugRoute: PropiedadSlugRoute,
 }
 export const routeTree = rootRouteImport
