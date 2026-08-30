@@ -2,9 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { CategoryPage } from "@/components/site/CategoryPage";
 
 export const Route = createFileRoute("/taxis")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    zona: typeof search['zona'] === "string" ? (search['zona'] as string) : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): { zona?: string } =>
+    typeof search['zona'] === "string" ? { zona: search['zona'] } : {},
   head: () => ({
     meta: [
       { title: "Taxis y traslados en Cuba | ToenCuba" },
